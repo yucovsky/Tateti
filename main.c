@@ -20,18 +20,18 @@ int comprobarGeneral(char tG[][3]);
 
 
 int main(int arg, char *argv[]) {
-    if(arg!=3){
-        printf("Asegurate de ingresar bien los archivos\n");
+    if(arg != 3){
+        printf("La cantidad de argumentos es inválida\n");
         return 1;
     }
 
-    FILE *archivo=fopen(argv[1],"r");
+    FILE *archivo = fopen(argv[1],"r");
     char *nombres[2];
-    nombres[0]=malloc(sizeof(char)*30);
-    nombres[1]=malloc(sizeof(char)*30);
-    fgets(nombres[0],30,archivo);
+    nombres[0] = malloc(sizeof(*char)*30);
+    nombres[1] = malloc(sizeof(*char)*30);
+    fgets(nombres[0], 30, archivo);
     nombres[0][strcspn(nombres[0], "\n")] = '\0';
-    fgets(nombres[1],30,archivo);
+    fgets(nombres[1], 30, archivo);
     nombres[1][strcspn(nombres[1], "\n")] = '\0';
 
     //guardar en dos instancias de estructura el nombre y ficha de cada jugador
@@ -53,9 +53,9 @@ int main(int arg, char *argv[]) {
     crearTableroG(tableroGeneral);
     imprimirTablero(tablero);
 
-    printf("Bienvenidos al tateti %s y %s! \n\n",j1.nombre,j2.nombre);
+    printf("Bienvenidos al tateti, %s y %s! \n\n",j1.nombre,j2.nombre);
     printf("\033[31mX: \033[0m");
-    int nroTablero=escogerTableros(tablero);
+    int nroTablero = escogerTableros(tablero);
 
     int b=1;
     while(b){
@@ -155,7 +155,7 @@ int comprobarPosicion(int fila,int columna, int *b,char tablero[][9]){
 }
 
 int comprobarGanador(char tablero[][9],int NsubTablero){
-    int f=((NsubTablero-1)/3)*3,c=((NsubTablero-1)%3)*3;
+    int f = ((NsubTablero-1)/3)*3, c = ((NsubTablero-1)%3)*3;
     //comprobar filas
     for(int i=0;i<3;i++)
         if(tablero[i+f][c]==tablero[i+f][c+1] && tablero[i+f][c]==tablero[i+f][c+2] && tablero[f+i][c]!='*')
