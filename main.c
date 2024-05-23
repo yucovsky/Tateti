@@ -67,7 +67,7 @@ int main(int arg, char *argv[]) {
             if(comprobarGeneral(tableroGeneral)==1){
                 printf("\n\nFelicitaciones %s, ganaste!",jActual.nombre);
                 FILE *archivo2=fopen(argv[2],"w");
-                fprintf(archivo2,"Ganador: ",jActual.nombre);
+                fprintf(archivo2,"Ganador: %s",jActual.nombre);
                 fclose(archivo2);
                 b=0;
                 } else if(comprobarGeneral(tableroGeneral)==2) printf("\n\nEmpate!");
@@ -137,6 +137,7 @@ void ponerFicha(char tablero[][9],Jugador jActual,int *nroTablero,char tableroGe
                     tableroGeneral[(fila-(pos-1)/3)/3][(columna-(pos-1)%3)/3]=jActual.ficha;
                 } else if(comprobarGanador(tablero,*nroTablero)==2){
                     rellenarTablero(tablero,*nroTablero,'E');
+                    tableroGeneral[(fila-(pos-1)/3)/3][(columna-(pos-1)%3)/3]='E';
                 }
             }
         }
@@ -190,16 +191,31 @@ int comprobarPosibilidad(char tablero[][9],int nro){
 
 int comprobarGeneral(char tG[][3]){
     //comprobar filas
-    for(int i=0;i<3;i++)
-        if(tG[i][0]==tG[i][1] && tG[i][0]==tG[i][2] && tG[i][0]!='*')
+    for (int i = 0; i < 3; i++)
+        if ((tG[i][0] == tG[i][1] && tG[i][0] == tG[i][2] && tG[i][0] != '*') ||
+            (tG[i][0] == 'E' && tG[i][1] == tG[i][2] && tG[i][1] != '*') ||
+            (tG[i][1] == 'E' && tG[i][0] == tG[i][2] && tG[i][0] != '*') ||
+            (tG[i][2] == 'E' && tG[i][0] == tG[i][1] && tG[i][0] != '*'))
             return 1;
+
     //comprobar columnas
-    for(int i=0;i<3;i++)
-        if(tG[0][i]==tG[1][i] && tG[0][i]==tG[2][i] && tG[0][i]!='*')
+    for (int i = 0; i < 3; i++)
+        if ((tG[0][i] == tG[1][i] && tG[0][i] == tG[2][i] && tG[0][i] != '*') ||
+            (tG[0][i] == 'E' && tG[1][i] == tG[2][i] && tG[1][i] != '*') ||
+            (tG[1][i] == 'E' && tG[0][i] == tG[2][i] && tG[0][i] != '*') ||
+            (tG[2][i] == 'E' && tG[0][i] == tG[1][i] && tG[0][i] != '*'))
             return 1;
+
     //comprobar diagonales
-    if(tG[0][0]==tG[1][1] && tG[0][0]==tG[2][2] && tG[0][0]!='*')return 1;
-    if(tG[0][2]==tG[1][1] && tG[0][2]==tG[2][0] && tG[0][2]!='*')return 1;
+    if ((tG[0][0] == tG[1][1] && tG[0][0] == tG[2][2] && tG[0][0] != '*') ||
+        (tG[0][0] == 'E' && tG[1][1] == tG[2][2] && tG[1][1] != '*') ||
+        (tG[1][1] == 'E' && tG[0][0] == tG[2][2] && tG[0][0] != '*') ||
+        (tG[2][2] == 'E' && tG[0][0] == tG[1][1] && tG[0][0] != '*') ||
+        (tG[0][2] == tG[1][1] && tG[0][2] == tG[2][0] && tG[0][2] != '*') ||
+        (tG[0][2] == 'E' && tG[1][1] == tG[2][0] && tG[1][1] != '*') ||
+        (tG[1][1] == 'E' && tG[0][2] == tG[2][0] && tG[0][2] != '*') ||
+        (tG[2][0] == 'E' && tG[0][2] == tG[1][1] && tG[0][2] != '*'))
+        return 1;
 
     //comprobar empate
     for(int i=0;i<3;i++)
