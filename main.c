@@ -116,7 +116,7 @@ int escogerTableros(char tablero[][9]){
     while(1){
         printf("Ingrese el tablero en el que desee jugar: ");
         scanf("%d",&eleccion);
-        if(comprobarPosibilidad(tablero,eleccion) && eleccion<=9)return eleccion;
+        if(comprobarPosibilidad(tablero,eleccion) && eleccion<=9 && eleccion>0)return eleccion;
     }
 }
 
@@ -129,7 +129,7 @@ void ponerFicha(char tablero[][9],Jugador jActual,int *nroTablero,char tableroGe
         scanf("%d",&pos);
 
         int fila=((*nroTablero-1)/3)*3 + (pos-1)/3, columna=((*nroTablero-1)%3)*3 + (pos-1)%3;
-        if(pos<=9){
+        if(pos<=9 && pos>0){
             if(comprobarPosicion(fila,columna,&b,tablero)) {
                 tablero[fila][columna]=jActual.ficha;
                 if(comprobarGanador(tablero,*nroTablero)==1){
