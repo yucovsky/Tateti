@@ -7,9 +7,9 @@ int main(int arg, char *argv[]) {
     }
 
     Jugador j1,j2,jActual;
-    completarEstructura(&j1, &j2, argv);
-    
     srand(time(NULL));
+    completarEstructura(&j1,&j2,argv);
+    
     if((rand() % 2 + 1) % 2 == 0)
         jActual = j1;
     else
@@ -28,8 +28,8 @@ int main(int arg, char *argv[]) {
     while (b) {
         system(limpiar);
         imprimirTablero(tablero);
-        if (comprobarPosibilidad(tablero, nroTablero)) {
 
+        if (comprobarPosibilidad(tablero, nroTablero)) {
             if (comprobarGeneral(tableroGeneral)) {
                 printf("\n\nFelicitaciones %s, ganaste!\n", jActual.nombre);
                 FILE *archivo2 = fopen(argv[2], "w");
@@ -40,15 +40,17 @@ int main(int arg, char *argv[]) {
                     printf("\nError al abrir el archivo %s para imprimir el ganador\n", argv[2]);
                 }
                 b = 0;
+                return 0;
             } else if (comprobarGeneral(tableroGeneral) == 2) {
                 printf("\n\nEmpate!");
+                return 0;
             }
 
             ponerFicha(tablero, jActual, &nroTablero, tableroGeneral);
             imprimirTablero(tablero);
 
             jActual = (jActual.ficha == j1.ficha) ? j2 : j1;
-        } else {
+        } else if (!comprobarGeneral(tableroGeneral)) {
             nroTablero = escogerTableros(jActual);
         }
     }
@@ -82,11 +84,19 @@ void completarEstructura(Jugador *j1, Jugador *j2, char *argv[]){
         exit(1);
     }
 
-    j1->ficha = 'X';
-    strcpy(j1->nombre, nombres[0]);
-
-    j2->ficha = 'O';
-    strcpy(j2->nombre, nombres[1]);
+    if((rand() % 2 + 1) % 2 == 0){
+        j1->ficha = 'X';
+        strcpy(j1->nombre, nombres[0]);
+        j2->ficha = 'O';
+        strcpy(j2->nombre, nombres[1]);
+    }
+    else{
+        j1->ficha = 'X';
+        strcpy(j1->nombre, nombres[1]);
+        j2->ficha = 'O';
+        strcpy(j2->nombre, nombres[0]);
+    }
+    
 
     free(nombres[0]);
     free(nombres[1]);
