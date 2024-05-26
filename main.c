@@ -278,6 +278,24 @@ int comprobarGeneral(char tG[][3]){
         (tG[2][0] == 'E' && tG[0][2] == tG[1][1] && tG[0][2] != '*'))
         return 1;
 
+    // Comprobar empates en línea
+    for (int i = 0; i < 3; i++) {
+        if (tG[i][0] == 'E' && tG[i][1] == 'E' && tG[i][2] == 'E') {
+            return 1;
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        if (tG[0][i] == 'E' && tG[1][i] == 'E' && tG[2][i] == 'E') {
+            return 1;
+        }
+    }
+    if (tG[0][0] == 'E' && tG[1][1] == 'E' && tG[2][2] == 'E') {
+        return 1;
+    }
+    if (tG[0][2] == 'E' && tG[1][1] == 'E' && tG[2][0] == 'E') {
+        return 1;
+    }
+
     //comprobar empate
     for(int i = 0; i < 3; i ++)
         for(int j = 0; j < 3; j ++)
