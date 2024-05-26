@@ -26,9 +26,9 @@ int main(int arg, char *argv[]) {
     while (1) {
         system(limpiar);
         imprimirTablero(tablero);
-        int resultadoGeneral = comprobarGeneral(tableroGeneral);
+        int resultadoGeneral = comprobarGeneral(tableroGeneral,&jActual,j1,j2);
         
-        if (comprobarPosibilidad(tablero, nroTablero)||resultadoGeneral==2) {
+        if (comprobarPosibilidad(tablero, nroTablero)||resultadoGeneral!=0) {
             
             if (resultadoGeneral==1) {
                 printf("\n\nFelicitaciones %s, ganaste!\n", jActual.nombre);
@@ -250,33 +250,60 @@ int comprobarPosibilidad(char tablero[][9], int nro){
     return 0;
 }
 
-int comprobarGeneral(char tG[][3]){
+int comprobarGeneral(char tG[][3],Jugador *jActual,Jugador j1,Jugador j2){
     //comprobar filas
     for (int i = 0; i < 3; i++)
         if ((tG[i][0] == tG[i][1] && tG[i][0] == tG[i][2] && tG[i][0] != '*') ||
             (tG[i][0] == 'E' && tG[i][1] == tG[i][2] && tG[i][1] != '*') ||
             (tG[i][1] == 'E' && tG[i][0] == tG[i][2] && tG[i][0] != '*') ||
-            (tG[i][2] == 'E' && tG[i][0] == tG[i][1] && tG[i][0] != '*'))
+            (tG[i][2] == 'E' && tG[i][0] == tG[i][1] && tG[i][0] != '*')){
+            jActual->ficha = (tG[i][0] != 'E') ? tG[i][0] : (tG[i][1] != 'E') ? tG[i][1] : tG[i][2];
+            if (j1.ficha == jActual->ficha) {
+                strcpy(jActual->nombre, j1.nombre);
+            } else {
+                strcpy(jActual->nombre, j2.nombre);
+            }
             return 1;
-
+        }
     //comprobar columnas
     for (int i = 0; i < 3; i++)
         if ((tG[0][i] == tG[1][i] && tG[0][i] == tG[2][i] && tG[0][i] != '*') ||
             (tG[0][i] == 'E' && tG[1][i] == tG[2][i] && tG[1][i] != '*') ||
             (tG[1][i] == 'E' && tG[0][i] == tG[2][i] && tG[0][i] != '*') ||
-            (tG[2][i] == 'E' && tG[0][i] == tG[1][i] && tG[0][i] != '*'))
+            (tG[2][i] == 'E' && tG[0][i] == tG[1][i] && tG[0][i] != '*')){
+            jActual->ficha = (tG[i][0] != 'E') ? tG[i][0] : (tG[i][1] != 'E') ? tG[i][1] : tG[i][2];
+            if (j1.ficha == jActual->ficha) {
+                strcpy(jActual->nombre, j1.nombre);
+            } else {
+                strcpy(jActual->nombre, j2.nombre);
+            }
             return 1;
-
+        }
     //comprobar diagonales
     if ((tG[0][0] == tG[1][1] && tG[0][0] == tG[2][2] && tG[0][0] != '*') ||
         (tG[0][0] == 'E' && tG[1][1] == tG[2][2] && tG[1][1] != '*') ||
         (tG[1][1] == 'E' && tG[0][0] == tG[2][2] && tG[0][0] != '*') ||
-        (tG[2][2] == 'E' && tG[0][0] == tG[1][1] && tG[0][0] != '*') ||
-        (tG[0][2] == tG[1][1] && tG[0][2] == tG[2][0] && tG[0][2] != '*') ||
+        (tG[2][2] == 'E' && tG[0][0] == tG[1][1] && tG[0][0] != '*')){
+            jActual->ficha = (tG[0][0] != 'E') ? tG[0][0] : (tG[1][1] != 'E') ? tG[1][1] : tG[0][2];
+            if (j1.ficha == jActual->ficha) {
+                strcpy(jActual->nombre, j1.nombre);
+            } else {
+                strcpy(jActual->nombre, j2.nombre);
+            }
+            return 1;
+        }
+    if ((tG[0][2] == tG[1][1] && tG[0][2] == tG[2][0] && tG[0][2] != '*') ||
         (tG[0][2] == 'E' && tG[1][1] == tG[2][0] && tG[1][1] != '*') ||
         (tG[1][1] == 'E' && tG[0][2] == tG[2][0] && tG[0][2] != '*') ||
-        (tG[2][0] == 'E' && tG[0][2] == tG[1][1] && tG[0][2] != '*'))
-        return 1;
+        (tG[2][0] == 'E' && tG[0][2] == tG[1][1] && tG[0][2] != '*')){
+            jActual->ficha = (tG[0][2] != 'E') ? tG[0][2] : (tG[1][1] != 'E') ? tG[1][1] : tG[2][0];
+            if (j1.ficha == jActual->ficha) {
+                strcpy(jActual->nombre, j1.nombre);
+            } else {
+                strcpy(jActual->nombre, j2.nombre);
+            }
+            return 1;
+        }
 
     // Comprobar empates en línea
     for (int i = 0; i < 3; i++) {

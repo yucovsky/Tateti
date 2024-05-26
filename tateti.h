@@ -24,4 +24,4 @@ int comprobarPosicion(int fila,int columna, int *b,char tablero[][9]);
 int comprobarGanador(char tablero[][9],int subTablero);
 void rellenarTablero(char tablero[][9],int Ntablero,char ganador);
 int comprobarPosibilidad(char tablero[][9],int nro);
-int comprobarGeneral(char tG[][3]);
+int comprobarGeneral(char tG[][3],Jugador *jActual,Jugador j1,Jugador j2);
