@@ -2,7 +2,7 @@
 
 int main(int arg, char *argv[]) {
     if(arg != 3){
-        printf("Cantidad de argumentos invalida\n");
+        printf("\033[33mCantidad de argumentos invalida\033[0m\n");
         return 1;
     }
 
@@ -15,51 +15,58 @@ int main(int arg, char *argv[]) {
     else
         jActual = j2;
 
-    
     char tableroGeneral[3][3], tablero[9][9];
     crearTablero(tablero);
     crearTableroG(tableroGeneral);
     imprimirTablero(tablero);
 
     printf("¡Bienvenidos al juego ultra-tateti! Se enfrenta %s contra %s\n\n", j1.nombre, j2.nombre);
-    int nroTablero = escogerTableros(jActual);
+    int nroTablero = escogerTableros(jActual),b=1;
 
-    int b = 1;
-    while (b) {
+    while (1) {
         system(limpiar);
         imprimirTablero(tablero);
-
-        if (comprobarPosibilidad(tablero, nroTablero)) {
-            if (comprobarGeneral(tableroGeneral)) {
+        int resultadoGeneral = comprobarGeneral(tableroGeneral);
+        
+        if (comprobarPosibilidad(tablero, nroTablero)||resultadoGeneral==2) {
+            
+            if (resultadoGeneral==1) {
                 printf("\n\nFelicitaciones %s, ganaste!\n", jActual.nombre);
                 FILE *archivo2 = fopen(argv[2], "w");
                 if (archivo2 != NULL) {
                     fprintf(archivo2, "Ganador: %s", jActual.nombre);
                     fclose(archivo2);
                 } else {
-                    printf("\nError al abrir el archivo %s para imprimir el ganador\n", argv[2]);
+                    printf("\n\033[33mError al abrir el archivo %s para imprimir el ganador\033[0m\n", argv[2]);
                 }
-                b = 0;
                 return 0;
-            } else if (comprobarGeneral(tableroGeneral) == 2) {
+            } else if (resultadoGeneral == 2) {
                 printf("\n\nEmpate!");
                 return 0;
             }
 
+            if(!b)
+                jActual = (jActual.ficha == j1.ficha) ? j2 : j1;
+            else b=0;
+
             ponerFicha(tablero, jActual, &nroTablero, tableroGeneral);
             imprimirTablero(tablero);
-
+        } else if (!resultadoGeneral) {
+            printf("\033[33mEl tablero nro %d ya esta finalizado.\033[0m\n",nroTablero);
             jActual = (jActual.ficha == j1.ficha) ? j2 : j1;
-        } else if (!comprobarGeneral(tableroGeneral)) {
             nroTablero = escogerTableros(jActual);
+            if(!comprobarPosibilidad(tablero, nroTablero))
+                jActual = (jActual.ficha == j1.ficha) ? j2 : j1;
+            b=1;
         }
     }
     return 0;
 }
+
 void completarEstructura(Jugador *j1, Jugador *j2, char *argv[]){
     FILE *archivo = fopen(argv[1], "r");
     if (archivo == NULL) {
-        printf("Error al abrir el archivo de jugadores\n");
+        printf("\033[33mError al abrir el archivo de jugadores\033[0m\n");
         exit(1);
     }
 
@@ -68,7 +75,7 @@ void completarEstructura(Jugador *j1, Jugador *j2, char *argv[]){
     nombres[1] = malloc(sizeof(char) * 30);
 
     if (fscanf(archivo,"%s",nombres[0]) != 1) {
-        printf("Error al leer el nombre del primer jugador\n");
+        printf("\033[33mError al leer el nombre del primer jugador\033[0m\n");
         free(nombres[0]);
         free(nombres[1]);
         fclose(archivo);
@@ -77,7 +84,7 @@ void completarEstructura(Jugador *j1, Jugador *j2, char *argv[]){
     
 
     if (fscanf(archivo,"%s",nombres[1]) != 1) {
-        printf("Error al leer el nombre del segundo jugador\n");
+        printf("\033[33mError al leer el nombre del segundo jugador\033[0m\n");
         free(nombres[0]);
         free(nombres[1]);
         fclose(archivo);
@@ -150,9 +157,9 @@ int escogerTableros(Jugador jActual) {
         int rango = scanf("%d", &eleccion);
 
         if (rango != 1) {
-            printf("Entrada no válida. Por favor, ingrese un número entre 1 y 9.\n");
+            printf("\033[33mEntrada no valida. Por favor, ingrese un numero entre 1 y 9.\033[0m\n");
         } else if (eleccion < 1 || eleccion > 9) {
-            printf("Número de tablero inválido, intente de nuevo.\n");
+            printf("\033[33mNumero de tablero invalido, intente de nuevo.\033[0m\n");
         } else {
             return eleccion;
         }
@@ -174,9 +181,9 @@ void ponerFicha(char tablero[][9], Jugador jActual, int *nroTablero, char tabler
         if (resultado != 1) {
             // Aca tambien, para descartar valores no validos
             while (getchar() != '\n');
-            printf("\nValor no válido. Por favor, ingrese un número entre 1 y 9.\n");
+            printf("\n\033[33mValor no valido. Por favor, ingrese un numero entre 1 y 9.\033[0m\n");
         } else if (pos > 9 || pos < 1) {
-            printf("\nNúmero fuera de rango. Por favor, ingrese un número entre 1 y 9.\n");
+            printf("\n\033[33mNumero fuera de rango. Por favor, ingrese un numero entre 1 y 9.\033[0m\n");
         } else {
             int fila = ((*nroTablero - 1) / 3) * 3 + (pos - 1) / 3;
             int columna = ((*nroTablero - 1) % 3) * 3 + (pos - 1) % 3;

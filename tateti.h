@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#ifdef _WIN32_
+#ifdef _WIN32
     #define limpiar "cls"
 #else
     #define limpiar "clear"
