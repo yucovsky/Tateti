@@ -1,3 +1,4 @@
+Juego creado por Julian Vaccari y Francisco Yucovsky
 Estructura del Juego
 Jugador: Estructura con la ficha ('X' o 'O') y el nombre del jugador.
 Tablero Grande: Matriz 9x9 que representa el área de juego.
