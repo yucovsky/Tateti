@@ -41,7 +41,14 @@ int main(int arg, char *argv[]) {
                 }
                 return 0;
             } else if (resultadoGeneral == 2) {
-                printf("\n\nEmpate!");
+                printf("\n\nEmpate!\n");
+                FILE *archivo2 = fopen(argv[2], "w");
+                if (archivo2 != NULL) {
+                    fprintf(archivo2, "Ocurrio un empate!");
+                    fclose(archivo2);
+                } else {
+                    printf("\n\033[33mError al abrir el archivo %s para imprimir el empate\033[0m\n", argv[2]);
+                }
                 return 0;
             }
 
