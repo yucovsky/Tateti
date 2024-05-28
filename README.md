@@ -5,7 +5,10 @@ Jugador: Estructura con la ficha ('X' o 'O') y el nombre del jugador.
 Tablero Grande: Matriz 9x9 que representa el área de juego.
 Tablero General: Matriz 3x3 que guarda el estado de cada sub-tablero (ganado o empatado).
 
-Funciones Clave:
+
+Funciones:
+
+completarEstructura: Accede al archivo dado como argumento con los nombres, comprueba que esten ambos y los asigna a las estructuras de los jugadores usando memoria dinamica.
 
 Crear Tableros:
 crearTablero: Inicializa el tablero grande con asteriscos.
